@@ -35,8 +35,9 @@ class Board(object):
             "monster0": pygame.image.load(os.path.join(_dir, 'assets/monster0.png')).convert_alpha(),
             "princess": pygame.image.load(os.path.join(_dir, 'assets/princess.png')).convert_alpha(),
             "fireballright": pygame.image.load(os.path.join(_dir, 'assets/fireballright.png')).convert_alpha(),
-            "coin1": pygame.image.load(os.path.join(_dir, 'assets/coin1.png')).convert_alpha(),
+            "coin1": pygame.image.load(os.path.join(_dir, 'assets/spikes.png')).convert_alpha(),
             "wood_block": pygame.image.load(os.path.join(_dir, 'assets/wood_block.png')).convert_alpha(),
+            "wood_block2": pygame.image.load(os.path.join(_dir, 'assets/wood_block2.png')).convert_alpha(),
             "ladder": pygame.image.load(os.path.join(_dir, 'assets/ladder.png')).convert_alpha()
         }
 
@@ -251,7 +252,14 @@ class Board(object):
                             self.IMAGES["coin1"],
                             (y * 15 + 15 / 2,
                              x * 15 + 15 / 2),
-                             self._dir))    
+                             self._dir))
+                # Add a wall at that position
+                elif self.map[x][y] == 4:
+                    self.Walls.append(
+                        OnBoard(
+                            self.IMAGES["wood_block2"],
+                            (y * 15 + 15 / 2,
+                             x * 15 + 15 / 2)))                 
         
     # Check if the player is on a ladder or not
     def ladderCheck(self, laddersCollidedBelow,

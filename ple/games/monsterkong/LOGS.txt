@@ -9,5 +9,3 @@ Very important: Continous actions are now allowed (previous ple version didn't a
 3) We can now also create different colored platforms or ladders easily, by giving the different platforms various numbers and simply putting different textures on them. 
 
 4) Removing object prior information is also easy
-
-Fix the bug to regenarate coins upon victory
