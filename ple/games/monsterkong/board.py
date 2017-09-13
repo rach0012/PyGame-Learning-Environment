@@ -3,7 +3,7 @@ import pygame
 import math
 import sys
 import os
-
+import numpy as np
 from .person import Person
 from .onBoard import OnBoard
 from .coin import Coin
@@ -29,7 +29,7 @@ class Board(object):
         self.cycles = 0  # For the characters animation
         self.direction = 0
         self._dir = _dir
-
+        #self.file = open('map.txt', 'w') #to write the map array in a text file
         self.IMAGES = {
             "still": pygame.image.load(os.path.join(_dir, 'assets/still.png')).convert_alpha(),
             "monster0": pygame.image.load(os.path.join(_dir, 'assets/monster0.png')).convert_alpha(),
@@ -66,7 +66,7 @@ class Board(object):
         # on the screen
         self.fireballGroup = pygame.sprite.RenderPlain(self.Fireballs)
         self.playerGroup = pygame.sprite.RenderPlain(self.Players)
-        self.enemyGroup = pygame.sprite.RenderPlain(self.Enemies)
+        # self.enemyGroup = pygame.sprite.RenderPlain(self.Enemies)
         self.wallGroup = pygame.sprite.RenderPlain(self.Walls)
         self.ladderGroup = pygame.sprite.RenderPlain(self.Ladders)
         self.coinGroup = pygame.sprite.RenderPlain(self.Coins)
@@ -85,13 +85,13 @@ class Board(object):
                  435),
                 15,
                 15)]
-        self.Enemies = [
-            MonsterPerson(
-                self.IMAGES["monster0"],
-                (100,
-                 117),
-                self.rng,
-                self._dir)]
+        # self.Enemies = [
+        #     MonsterPerson(
+        #         self.IMAGES["monster0"],
+        #         (100,
+        #          117),
+        #         self.rng,
+        #         self._dir)]
         self.Allies = [Person(self.IMAGES["princess"], (50, 48), 18, 25)]
         self.Allies[0].updateWH(self.Allies[0].image, "H", 0, 25, 25)
         self.Coins = []
@@ -111,17 +111,18 @@ class Board(object):
 
     # Creates a new fireball and adds it to our fireball group
     def CreateFireball(self, location, monsterIndex):
-        if len(self.Fireballs) < len(self.Enemies) * 5:
-            self.Fireballs.append(
-                Fireball(self.IMAGES["fireballright"], (location[0], location[1] + 15), len(self.Fireballs),
-                         2 + len(self.Enemies) / 2, self.rng, self._dir))
-            # Starts monster's animation
-            self.Enemies[monsterIndex].setStopDuration(15)
-            self.Enemies[monsterIndex].setPosition(
-                (self.Enemies[monsterIndex].getPosition()[0], self.Enemies[monsterIndex].getPosition()[1] - 12))
-            self.Enemies[monsterIndex].setCenter(
-                self.Enemies[monsterIndex].getPosition())
-            self.createGroups()  # We recreate the groups so the fireball is added
+        pass
+        # if len(self.Fireballs) < len(self.Enemies) * 5:
+        #     self.Fireballs.append(
+        #         Fireball(self.IMAGES["fireballright"], (location[0], location[1] + 15), len(self.Fireballs),
+        #                  2 + len(self.Enemies) / 2, self.rng, self._dir))
+        #     # Starts monster's animation
+        #     self.Enemies[monsterIndex].setStopDuration(15)
+        #     self.Enemies[monsterIndex].setPosition(
+        #         (self.Enemies[monsterIndex].getPosition()[0], self.Enemies[monsterIndex].getPosition()[1] - 12))
+        #     self.Enemies[monsterIndex].setCenter(
+        #         self.Enemies[monsterIndex].getPosition())
+        #     self.createGroups()  # We recreate the groups so the fireball is added
 
     # Destroy a fireball if it has collided with a player or reached its
     # endpoint
@@ -139,27 +140,20 @@ class Board(object):
     # Randomly Generate coins in the level where there is a wall below the
     # coin so the player can reach it
     def GenerateCoins(self):
+        f = open ( 'map.txt' , 'r')
+        self.map = [ map(int,line.split(',')) for line in f if line.strip() != "" ] #load your own custom map here
+
         for i in range(6, len(self.map)):
             for j in range(len(self.map[i])):
-                if self.map[i][j] == 0 and ((i + 1 < len(self.map) and self.map[i + 1][j] == 1) or (
-                        i + 2 < len(self.map) and self.map[i + 2][j] == 1)):
-                    randNumber = math.floor(self.rng.rand() * 1000)
-                    if randNumber % 35 == 0 and len(
-                            self.Coins) <= 25:  # At max there will be 26 coins in the map
-                        self.map[i][j] = 3
-                        if j - 1 >= 0 and self.map[i][j - 1] == 3:
-                            self.map[i][j] = 0
-                        if self.map[i][j] == 3:
-                            # Add the coin to our coin list
-                            self.Coins.append(
-                                Coin(
-                                    self.IMAGES["coin1"],
-                                    (j * 15 + 15 / 2,
-                                     i * 15 + 15 / 2),
-                                    self._dir))
-        if len(
-                self.Coins) <= 15:  # If there are less than 21 coins, we call the function again
-            self.GenerateCoins()
+                if self.map[i][j] == 3:
+                    # Add the coin to our coin list
+                    self.Coins.append(
+                        Coin(
+                            self.IMAGES["coin1"],
+                            (j * 15 + 15 / 2,
+                             i * 15 + 15 / 2),
+                            self._dir))
+
 
     # Given a position and checkNo ( 1 for wall, 2 for ladder, 3 for coin) the
     # function tells us if its a valid position to place or not
@@ -184,7 +178,7 @@ class Board(object):
 
     # Add walls to our map boundaries and also the floors
     def makeWalls(self):
-        for i in range(0, int(self.__height / 15)):
+        for i in range(0, int(self.__height / 15 * 1)):
             self.map[i][0] = self.map[i][int(self.__width / 15 - 1)] = 1
         for i in range(2, int(self.__height / (15 * 4))):
             for j in range(0, int(self.__width / 15)):
@@ -231,6 +225,9 @@ class Board(object):
     '''
 
     def populateMap(self):
+        f = open ( 'map.txt' , 'r')
+        self.map = [ map(int,line.split(',')) for line in f if line.strip() != "" ] #load your own custom map here
+        
         for x in range(len(self.map)):
             for y in range(len(self.map[x])):
                 if self.map[x][y] == 1:
@@ -247,7 +244,15 @@ class Board(object):
                             self.IMAGES["ladder"],
                             (y * 15 + 15 / 2,
                              x * 15 + 15 / 2)))
-
+                elif self.map[x][y] == 3:
+                    # Add the coin to our coin list
+                    self.Coins.append(
+                        Coin(
+                            self.IMAGES["coin1"],
+                            (y * 15 + 15 / 2,
+                             x * 15 + 15 / 2),
+                             self._dir))    
+        
     # Check if the player is on a ladder or not
     def ladderCheck(self, laddersCollidedBelow,
                     wallsCollidedBelow, wallsCollidedAbove):
@@ -277,12 +282,14 @@ class Board(object):
     # Check for coins collided and add the appropriate score
     def coinCheck(self, coinsCollected):
         for coin in coinsCollected:
-            self.score += self.rewards["positive"]
+            self.score += self.rewards["negative"]
+            self.Players[0].setPosition((50, 440))
             # We also remove the coin entry from our map
-            self.map[int((coin.getPosition()[1] - 15 / 2) /
-                     15)][int((coin.getPosition()[0] - 15 / 2) / 15)] = 0
+            #self.map[int((coin.getPosition()[1] - 15 / 2) /
+            #         15)][int((coin.getPosition()[0] - 15 / 2) / 15)] = 0
+            self.lives += -1
             # Remove the coin entry from our list
-            self.Coins.remove(coin)
+            #self.Coins.remove(coin)
             # Update the coin group since we modified the coin list
             self.createGroups()
 
@@ -302,16 +309,16 @@ class Board(object):
             self.Coins = []
             self.GenerateCoins()
 
-            # Add monsters
-            if len(self.Enemies) == 1:
-                self.Enemies.append(
-                    MonsterPerson(
-                        self.IMAGES["monster0"], (700, 117), self.rng, self._dir))
-            elif len(self.Enemies) == 2:
-                self.Enemies.append(
-                    MonsterPerson(
-                        self.IMAGES["monster0"], (400, 117), self.rng, self._dir))
-            # Create the groups again so the enemies are effected
+            # # Add monsters
+            # if len(self.Enemies) == 1:
+            #     self.Enemies.append(
+            #         MonsterPerson(
+            #             self.IMAGES["monster0"], (700, 117), self.rng, self._dir))
+            # elif len(self.Enemies) == 2:
+            #     self.Enemies.append(
+            #         MonsterPerson(
+            #             self.IMAGES["monster0"], (400, 117), self.rng, self._dir))
+            # # Create the groups again so the enemies are effected
             self.createGroups()
 
     # Redraws the entire game screen for us
@@ -323,14 +330,14 @@ class Board(object):
         self.coinGroup.draw(screen)
         self.wallGroup.draw(screen)
         self.fireballGroup.draw(screen)
-        self.enemyGroup.draw(screen)
+        #self.enemyGroup.draw(screen)
         self.allyGroup.draw(screen)
 
     # Update all the groups from their corresponding lists
     def createGroups(self):
         self.fireballGroup = pygame.sprite.RenderPlain(self.Fireballs)
         self.playerGroup = pygame.sprite.RenderPlain(self.Players)
-        self.enemyGroup = pygame.sprite.RenderPlain(self.Enemies)
+        # self.enemyGroup = pygame.sprite.RenderPlain(self.Enemies)
         self.wallGroup = pygame.sprite.RenderPlain(self.Walls)
         self.ladderGroup = pygame.sprite.RenderPlain(self.Ladders)
         self.coinGroup = pygame.sprite.RenderPlain(self.Coins)
@@ -350,6 +357,6 @@ class Board(object):
         self.makePrincessChamber()
         self.makeLadders()
         self.makeHoles()
-        self.GenerateCoins()
+        #self.GenerateCoins()
         self.populateMap()
         self.createGroups()

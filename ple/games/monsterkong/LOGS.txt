@@ -1,0 +1,13 @@
+Change LOGS
+
+Very important: Continous actions are now allowed (previous ple version didn't allow that). For that I changed keydown to keypress and changed indentation, need to make sure that is okay for the DQN. 
+
+1) Created a custom map via text, which puts 1 for platform, 2 for ladder, and 3 for coins.
+
+2) This way we don't need any of the board.py functions that generate the coins, platforms, or ladders by themselves.
+
+3) We can now also create different colored platforms or ladders easily, by giving the different platforms various numbers and simply putting different textures on them. 
+
+4) Removing object prior information is also easy
+
+Fix the bug to regenarate coins upon victory

@@ -40,9 +40,7 @@ class MonsterKong(PyGameWrapper):
             "negative": -25,
             "tick": 0
         }
-
         self.allowed_fps = 30
-
         self._dir = os.path.dirname(os.path.abspath(__file__))
 
         self.IMAGES = {
@@ -54,6 +52,7 @@ class MonsterKong(PyGameWrapper):
         }
 
     def init(self):
+	
         # Create a new instance of the Board class
         self.newGame = Board(
             self.width,
@@ -85,20 +84,20 @@ class MonsterKong(PyGameWrapper):
 
         # Create fireballs as required, depending on the number of monsters in
         # our game at the moment
-        if self.fireballTimer == 0:
-            self.newGame.CreateFireball(
-                self.newGame.Enemies[0].getPosition(), 0)
-        elif len(self.newGame.Enemies) >= 2 and self.fireballTimer == 23:
-            self.newGame.CreateFireball(
-                self.newGame.Enemies[1].getPosition(), 1)
-        elif len(self.newGame.Enemies) >= 3 and self.fireballTimer == 46:
-            self.newGame.CreateFireball(
-                self.newGame.Enemies[2].getPosition(), 2)
-        self.fireballTimer = (self.fireballTimer + 1) % 70
+        # if self.fireballTimer == 0:
+        #     self.newGame.CreateFireball(
+        #         self.newGame.Enemies[0].getPosition(), 0)
+        # elif len(self.newGame.Enemies) >= 2 and self.fireballTimer == 23:
+        #     self.newGame.CreateFireball(
+        #         self.newGame.Enemies[1].getPosition(), 1)
+        # elif len(self.newGame.Enemies) >= 3 and self.fireballTimer == 46:
+        #     self.newGame.CreateFireball(
+        #         self.newGame.Enemies[2].getPosition(), 2)
+        # self.fireballTimer = (self.fireballTimer + 1) % 70
 
         # Animate the coin
-        for coin in self.coinGroup:
-            coin.animateCoin()
+        #for coin in self.coinGroup:
+        #    coin.animateCoin()
 
         # To check collisions below, we move the player downwards then check
         # and move him back to his original location
@@ -143,63 +142,62 @@ class MonsterKong(PyGameWrapper):
                         self.newGame.Players[0].isJumping = 1
                         self.newGame.Players[0].currentJumpSpeed = 7
 
-                if event.key == self.actions["right"]:
-                    if self.newGame.direction != 4:
-                        self.newGame.direction = 4
-                        self.newGame.cycles = -1  # Reset cycles
-                    self.newGame.cycles = (self.newGame.cycles + 1) % 4
-                    if self.newGame.cycles < 2:
-                        # Display the first image for half the cycles
-                        self.newGame.Players[0].updateWH(self.IMAGES["right"], "H",
-                                                         self.newGame.Players[0].getSpeed(), 15, 15)
-                    else:
-                        # Display the second image for half the cycles
-                        self.newGame.Players[0].updateWH(self.IMAGES["right2"], "H",
-                                                         self.newGame.Players[0].getSpeed(), 15, 15)
-                    wallsCollidedExact = self.newGame.Players[
-                        0].checkCollision(self.wallGroup)
-                    if wallsCollidedExact:
-                        # If we have collided a wall, move the player back to
-                        # where he was in the last state
-                        self.newGame.Players[0].updateWH(self.IMAGES["right"], "H",
-                                                         -self.newGame.Players[0].getSpeed(), 15, 15)
+        keyState = pygame.key.get_pressed()
+        if keyState[pygame.K_d]:
+            if self.newGame.direction != 4:
+                self.newGame.direction = 4
+                self.newGame.cycles = -1  # Reset cycles
+            self.newGame.cycles = (self.newGame.cycles + 1) % 4
+            if self.newGame.cycles < 2:
+                # Display the first image for half the cycles
+                self.newGame.Players[0].updateWH(self.IMAGES["right"], "H",
+                                                 self.newGame.Players[0].getSpeed(), 15, 15)
+            else:
+                # Display the second image for half the cycles
+                self.newGame.Players[0].updateWH(self.IMAGES["right2"], "H",
+                                                 self.newGame.Players[0].getSpeed(), 15, 15)
+            wallsCollidedExact = self.newGame.Players[
+                0].checkCollision(self.wallGroup)
+            if wallsCollidedExact:
+                # If we have collided a wall, move the player back to
+                # where he was in the last state
+                self.newGame.Players[0].updateWH(self.IMAGES["right"], "H",
+                                                 -self.newGame.Players[0].getSpeed(), 15, 15)
 
-                if event.key == self.actions["left"]:
-                    if self.newGame.direction != 3:
-                        self.newGame.direction = 3
-                        self.newGame.cycles = -1  # Reset cycles
-                    self.newGame.cycles = (self.newGame.cycles + 1) % 4
-                    if self.newGame.cycles < 2:
-                        # Display the first image for half the cycles
-                        self.newGame.Players[0].updateWH(self.IMAGES["left"], "H",
-                                                         -self.newGame.Players[0].getSpeed(), 15, 15)
-                    else:
-                        # Display the second image for half the cycles
-                        self.newGame.Players[0].updateWH(self.IMAGES["left2"], "H",
-                                                         -self.newGame.Players[0].getSpeed(), 15, 15)
-                    wallsCollidedExact = self.newGame.Players[
-                        0].checkCollision(self.wallGroup)
-                    if wallsCollidedExact:
-                        # If we have collided a wall, move the player back to
-                        # where he was in the last state
-                        self.newGame.Players[0].updateWH(self.IMAGES["left"], "H",
-                                                         self.newGame.Players[0].getSpeed(), 15, 15)
+        if keyState[pygame.K_a]:
+            if self.newGame.direction != 3:
+                self.newGame.direction = 3
+                self.newGame.cycles = -1  # Reset cycles
+            self.newGame.cycles = (self.newGame.cycles + 1) % 4
+            if self.newGame.cycles < 2:
+                # Display the first image for half the cycles
+                self.newGame.Players[0].updateWH(self.IMAGES["left"], "H",
+                                                 -self.newGame.Players[0].getSpeed(), 15, 15)
+            else:
+                # Display the second image for half the cycles
+                self.newGame.Players[0].updateWH(self.IMAGES["left2"], "H",
+                                                 -self.newGame.Players[0].getSpeed(), 15, 15)
+            wallsCollidedExact = self.newGame.Players[
+                0].checkCollision(self.wallGroup)
+            if wallsCollidedExact:
+                # If we have collided a wall, move the player back to
+                # where he was in the last state
+                self.newGame.Players[0].updateWH(self.IMAGES["left"], "H",
+                                                 self.newGame.Players[0].getSpeed(), 15, 15)
 
-                # If we are on a ladder, then we can move up
-                if event.key == self.actions[
-                        "up"] and self.newGame.Players[0].onLadder:
-                    self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
-                                                     -self.newGame.Players[0].getSpeed() / 2, 15, 15)
-                    if len(self.newGame.Players[0].checkCollision(self.ladderGroup)) == 0 or len(
-                            self.newGame.Players[0].checkCollision(self.wallGroup)) != 0:
-                        self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
-                                                         self.newGame.Players[0].getSpeed() / 2, 15, 15)
+        # If we are on a ladder, then we can move up
+        if keyState[pygame.K_w] and self.newGame.Players[0].onLadder:
+            self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
+                                             -self.newGame.Players[0].getSpeed() / 2, 15, 15)
+            if len(self.newGame.Players[0].checkCollision(self.ladderGroup)) == 0 or len(
+                    self.newGame.Players[0].checkCollision(self.wallGroup)) != 0:
+                self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
+                                                 self.newGame.Players[0].getSpeed() / 2, 15, 15)
 
-                # If we are on a ladder, then we can move down
-                if event.key == self.actions[
-                        "down"] and self.newGame.Players[0].onLadder:
-                    self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
-                                                     self.newGame.Players[0].getSpeed() / 2, 15, 15)
+        # If we are on a ladder, then we can move down
+        if keyState[pygame.K_s] and self.newGame.Players[0].onLadder:
+            self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
+                                             self.newGame.Players[0].getSpeed() / 2, 15, 15)
 
         # Update the player's position and process his jump if he is jumping
         self.newGame.Players[0].continuousUpdate(
@@ -228,3 +226,18 @@ class MonsterKong(PyGameWrapper):
         # Update all the monsters
         for enemy in self.newGame.Enemies:
             enemy.continuousUpdate(self.wallGroup, self.ladderGroup)
+
+
+if __name__ == "__main__":
+	pygame.init()
+	# Instantiate the Game class and run the game
+	game = MonsterKong()
+	game.screen = pygame.display.set_mode(game.getScreenDims(), 0, 32)
+    	game.clock = pygame.time.Clock()
+   	game.rng = np.random.RandomState(24)
+    	game.init()
+
+    	while True:
+        	dt = game.clock.tick_busy_loop(30)
+        	game.step(dt)
+        	pygame.display.update()
