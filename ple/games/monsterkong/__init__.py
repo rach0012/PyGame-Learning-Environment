@@ -61,9 +61,6 @@ class MonsterKong(PyGameWrapper):
             self.rng,
             self._dir)
 
-        # Initialize the fireball timer
-        self.fireballTimer = 0
-
         # Assign groups from the Board instance that was created
         self.playerGroup = self.newGame.playerGroup
         self.wallGroup = self.newGame.wallGroup
@@ -79,25 +76,7 @@ class MonsterKong(PyGameWrapper):
         self.newGame.score += self.rewards["tick"]
         # This is where the actual game is run
         # Get the appropriate groups
-        self.fireballGroup = self.newGame.fireballGroup
         self.coinGroup = self.newGame.coinGroup
-
-        # Create fireballs as required, depending on the number of monsters in
-        # our game at the moment
-        # if self.fireballTimer == 0:
-        #     self.newGame.CreateFireball(
-        #         self.newGame.Enemies[0].getPosition(), 0)
-        # elif len(self.newGame.Enemies) >= 2 and self.fireballTimer == 23:
-        #     self.newGame.CreateFireball(
-        #         self.newGame.Enemies[1].getPosition(), 1)
-        # elif len(self.newGame.Enemies) >= 3 and self.fireballTimer == 46:
-        #     self.newGame.CreateFireball(
-        #         self.newGame.Enemies[2].getPosition(), 2)
-        # self.fireballTimer = (self.fireballTimer + 1) % 70
-
-        # Animate the coin
-        #for coin in self.coinGroup:
-        #    coin.animateCoin()
 
         # To check collisions below, we move the player downwards then check
         # and move him back to his original location
@@ -211,10 +190,6 @@ class MonsterKong(PyGameWrapper):
         # Redraws all our instances onto the screen
         self.newGame.redrawScreen(self.screen, self.width, self.height)
 
-        # Update the fireball and check for collisions with player (ie Kill the
-        # player)
-        self.newGame.fireballCheck()
-
         # Collect a coin
         coinsCollected = pygame.sprite.spritecollide(
             self.newGame.Players[0], self.coinGroup, True)
@@ -222,10 +197,6 @@ class MonsterKong(PyGameWrapper):
 
         # Check if you have reached the princess
         self.newGame.checkVictory()
-
-        # Update all the monsters
-        for enemy in self.newGame.Enemies:
-            enemy.continuousUpdate(self.wallGroup, self.ladderGroup)
 
 
 if __name__ == "__main__":

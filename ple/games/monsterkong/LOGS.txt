@@ -13,3 +13,7 @@ Very important: Continous actions are now allowed (previous ple version didn't a
 5) Create 3 maps for various priors
 
 6) Figure out to shorten the map, and also where the initial position of the player is
+
+7) Need to make sure rewards are being generated properly
+
+8) Need to make sure coins Collected function doesn't create problem for DQN
