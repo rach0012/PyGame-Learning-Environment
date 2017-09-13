@@ -36,8 +36,11 @@ class Board(object):
             "princess": pygame.image.load(os.path.join(_dir, 'assets/princess.png')).convert_alpha(),
             "fireballright": pygame.image.load(os.path.join(_dir, 'assets/fireballright.png')).convert_alpha(),
             "coin1": pygame.image.load(os.path.join(_dir, 'assets/spikes.png')).convert_alpha(),
-            "wood_block": pygame.image.load(os.path.join(_dir, 'assets/wood_block.png')).convert_alpha(),
-            "wood_block2": pygame.image.load(os.path.join(_dir, 'assets/wood_block2.png')).convert_alpha(),
+            "wood_block": pygame.image.load(os.path.join(_dir, 'assets/wood_block2.png')).convert_alpha(),
+            "wood_block2": pygame.image.load(os.path.join(_dir, 'assets/wood_block.png')).convert_alpha(),
+            "wood_block3": pygame.image.load(os.path.join(_dir, 'assets/wood_block3.png')).convert_alpha(),
+            "wood_block4": pygame.image.load(os.path.join(_dir, 'assets/wood_block4.png')).convert_alpha(),
+            "wood_block5": pygame.image.load(os.path.join(_dir, 'assets/wood_block5.png')).convert_alpha(),
             "ladder": pygame.image.load(os.path.join(_dir, 'assets/ladder.png')).convert_alpha()
         }
 
@@ -260,7 +263,25 @@ class Board(object):
                             self.IMAGES["wood_block2"],
                             (y * 15 + 15 / 2,
                              x * 15 + 15 / 2)))                 
-        
+                elif self.map[x][y] == 5:
+                    self.Walls.append(
+                        OnBoard(
+                            self.IMAGES["wood_block3"],
+                            (y * 15 + 15 / 2,
+                             x * 15 + 15 / 2)))
+                elif self.map[x][y] == 6:
+                    self.Walls.append(
+                        OnBoard(
+                            self.IMAGES["wood_block4"],
+                            (y * 15 + 15 / 2,
+                             x * 15 + 15 / 2))) 
+                elif self.map[x][y] == 7:
+                    self.Walls.append(
+                        OnBoard(
+                            self.IMAGES["wood_block5"],
+                            (y * 15 + 15 / 2,
+                             x * 15 + 15 / 2))) 
+
     # Check if the player is on a ladder or not
     def ladderCheck(self, laddersCollidedBelow,
                     wallsCollidedBelow, wallsCollidedAbove):
