@@ -20,7 +20,7 @@ class MonsterKong(PyGameWrapper):
 
         """
 
-        self.height = 465
+        self.height = 205 #modify height accordingly based on how long the game level is 
         self.width = 500
 
         actions = {

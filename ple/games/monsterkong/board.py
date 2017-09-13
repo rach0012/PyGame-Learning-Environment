@@ -26,6 +26,10 @@ class Board(object):
         self.cycles = 0  # For the characters animation
         self.direction = 0
         self._dir = _dir
+        
+        self.playerPosition = (120, 150) #change here depending on game width and height
+        self.princessPosition = (90, 32)
+
         self.IMAGES = {
             "still": pygame.image.load(os.path.join(_dir, 'assets/still.png')).convert_alpha(),
             "monster0": pygame.image.load(os.path.join(_dir, 'assets/monster0.png')).convert_alpha(),
@@ -71,8 +75,8 @@ class Board(object):
         self.score = 0
         self.lives = 3
         self.map = []  # We will create the map again when we reset the game
-        self.Players = [Player(self.IMAGES["still"],(100, 290),15,15)] #initial position of the player
-        self.Allies = [Person(self.IMAGES["princess"], (50, 48), 18, 25)] #initial position of the goal i.e. princess
+        self.Players = [Player(self.IMAGES["still"],self.playerPosition,15,15)] #initial position of the player
+        self.Allies = [Person(self.IMAGES["princess"], self.princessPosition, 18, 25)] #initial position of the goal i.e. princess
         self.Allies[0].updateWH(self.Allies[0].image, "H", 0, 25, 25)
         self.Coins = []
         self.Walls = []
@@ -171,7 +175,7 @@ class Board(object):
     def coinCheck(self, coinsCollected):
         for coin in coinsCollected:
             self.score += self.rewards["negative"]
-            self.Players[0].setPosition((100, 290)) #player dies when reaches coin (coin is basically the enemy)
+            self.Players[0].setPosition(self.playerPosition) #player dies when reaches coin (coin is basically the enemy)
             # We also remove the coin entry from our map
             #self.map[int((coin.getPosition()[1] - 15 / 2) /
             #         15)][int((coin.getPosition()[0] - 15 / 2) / 15)] = 0
@@ -192,7 +196,7 @@ class Board(object):
 
             # This is just the next level so we only clear the fireballs and
             # regenerate the coins
-            self.Players[0].setPosition((100, 290))
+            self.Players[0].setPosition(self.playerPosition)
             self.createGroups()
 
     # Redraws the entire game screen for us
