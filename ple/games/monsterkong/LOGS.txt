@@ -17,3 +17,6 @@ Very important: Continous actions are now allowed (previous ple version didn't a
 7) Need to make sure rewards are being generated properly
 
 8) Need to make sure coins Collected function doesn't create problem for DQN
+
+9) to make sure different rewards for win, negative etc, don't affect dqn. is the dqn supposed to gather score instead of reward?
+

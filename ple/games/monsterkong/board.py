@@ -73,7 +73,7 @@ class Board(object):
 
     def resetGroups(self):
         self.score = 0
-        self.lives = 3
+        self.lives = 1
         self.map = []  # We will create the map again when we reset the game
         self.Players = [Player(self.IMAGES["still"],self.playerPosition,15,15)] #initial position of the player
         self.Allies = [Person(self.IMAGES["princess"], self.princessPosition, 18, 25)] #initial position of the goal i.e. princess
@@ -174,12 +174,12 @@ class Board(object):
     # Check for coins collided and add the appropriate score
     def coinCheck(self, coinsCollected):
         for coin in coinsCollected:
-            self.score += self.rewards["negative"]
+            #self.score += self.rewards["negative"]
             self.Players[0].setPosition(self.playerPosition) #player dies when reaches coin (coin is basically the enemy)
             # We also remove the coin entry from our map
             #self.map[int((coin.getPosition()[1] - 15 / 2) /
             #         15)][int((coin.getPosition()[0] - 15 / 2) / 15)] = 0
-            self.lives += -1
+            self.lives = 0
             # Remove the coin entry from our list
             #self.Coins.remove(coin)
             # Update the coin group since we modified the coin list
