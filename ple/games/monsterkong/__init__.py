@@ -211,5 +211,4 @@ if __name__ == "__main__":
 	while True:
 		dt = game.clock.tick_busy_loop(30)
 		game.step(dt)
-		print(game.rewards["tick"])
 		pygame.display.update()
