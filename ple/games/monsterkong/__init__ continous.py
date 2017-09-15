@@ -1,3 +1,5 @@
+#modified original init so that the game has continous movements
+
 __author__ = 'Batchu Vishal'
 import pygame
 import sys
@@ -121,62 +123,62 @@ class MonsterKong(PyGameWrapper):
 						self.newGame.Players[0].isJumping = 1
 						self.newGame.Players[0].currentJumpSpeed = 7
 
-        		keyState = pygame.key.get_pressed()
-        		if keyState[pygame.K_d]:
-        			if self.newGame.direction != 4:
-        				self.newGame.direction = 4
-        				self.newGame.cycles = -1  # Reset cycles
-        			self.newGame.cycles = (self.newGame.cycles + 1) % 4
-        			if self.newGame.cycles < 2:
-        				# Display the first image for half the cycles
-        				self.newGame.Players[0].updateWH(self.IMAGES["right"], "H",
-        												 self.newGame.Players[0].getSpeed(), 15, 15)
-        			else:
-        				# Display the second image for half the cycles
-        				self.newGame.Players[0].updateWH(self.IMAGES["right2"], "H",
-        												 self.newGame.Players[0].getSpeed(), 15, 15)
-        			wallsCollidedExact = self.newGame.Players[
-        				0].checkCollision(self.wallGroup)
-        			if wallsCollidedExact:
-        				# If we have collided a wall, move the player back to
-        				# where he was in the last state
-        				self.newGame.Players[0].updateWH(self.IMAGES["right"], "H",
-        												 -self.newGame.Players[0].getSpeed(), 15, 15)
+		keyState = pygame.key.get_pressed()
+		if keyState[pygame.K_d]:
+			if self.newGame.direction != 4:
+				self.newGame.direction = 4
+				self.newGame.cycles = -1  # Reset cycles
+			self.newGame.cycles = (self.newGame.cycles + 1) % 4
+			if self.newGame.cycles < 2:
+				# Display the first image for half the cycles
+				self.newGame.Players[0].updateWH(self.IMAGES["right"], "H",
+												 self.newGame.Players[0].getSpeed(), 15, 15)
+			else:
+				# Display the second image for half the cycles
+				self.newGame.Players[0].updateWH(self.IMAGES["right2"], "H",
+												 self.newGame.Players[0].getSpeed(), 15, 15)
+			wallsCollidedExact = self.newGame.Players[
+				0].checkCollision(self.wallGroup)
+			if wallsCollidedExact:
+				# If we have collided a wall, move the player back to
+				# where he was in the last state
+				self.newGame.Players[0].updateWH(self.IMAGES["right"], "H",
+												 -self.newGame.Players[0].getSpeed(), 15, 15)
 
-        		if keyState[pygame.K_a]:
-        			if self.newGame.direction != 3:
-        				self.newGame.direction = 3
-        				self.newGame.cycles = -1  # Reset cycles
-        			self.newGame.cycles = (self.newGame.cycles + 1) % 4
-        			if self.newGame.cycles < 2:
-        				# Display the first image for half the cycles
-        				self.newGame.Players[0].updateWH(self.IMAGES["left"], "H",
-        												 -self.newGame.Players[0].getSpeed(), 15, 15)
-        			else:
-        				# Display the second image for half the cycles
-        				self.newGame.Players[0].updateWH(self.IMAGES["left2"], "H",
-        												 -self.newGame.Players[0].getSpeed(), 15, 15)
-        			wallsCollidedExact = self.newGame.Players[
-        				0].checkCollision(self.wallGroup)
-        			if wallsCollidedExact:
-        				# If we have collided a wall, move the player back to
-        				# where he was in the last state
-        				self.newGame.Players[0].updateWH(self.IMAGES["left"], "H",
-        												 self.newGame.Players[0].getSpeed(), 15, 15)
+		if keyState[pygame.K_a]:
+			if self.newGame.direction != 3:
+				self.newGame.direction = 3
+				self.newGame.cycles = -1  # Reset cycles
+			self.newGame.cycles = (self.newGame.cycles + 1) % 4
+			if self.newGame.cycles < 2:
+				# Display the first image for half the cycles
+				self.newGame.Players[0].updateWH(self.IMAGES["left"], "H",
+												 -self.newGame.Players[0].getSpeed(), 15, 15)
+			else:
+				# Display the second image for half the cycles
+				self.newGame.Players[0].updateWH(self.IMAGES["left2"], "H",
+												 -self.newGame.Players[0].getSpeed(), 15, 15)
+			wallsCollidedExact = self.newGame.Players[
+				0].checkCollision(self.wallGroup)
+			if wallsCollidedExact:
+				# If we have collided a wall, move the player back to
+				# where he was in the last state
+				self.newGame.Players[0].updateWH(self.IMAGES["left"], "H",
+												 self.newGame.Players[0].getSpeed(), 15, 15)
 
-        		# If we are on a ladder, then we can move up
-        		if keyState[pygame.K_w] and self.newGame.Players[0].onLadder:
-        			self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
-        											 -self.newGame.Players[0].getSpeed() / 2, 15, 15)
-        			if len(self.newGame.Players[0].checkCollision(self.ladderGroup)) == 0 or len(
-        					self.newGame.Players[0].checkCollision(self.wallGroup)) != 0:
-        				self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
-        												 self.newGame.Players[0].getSpeed() / 2, 15, 15)
+		# If we are on a ladder, then we can move up
+		if keyState[pygame.K_w] and self.newGame.Players[0].onLadder:
+			self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
+											 -self.newGame.Players[0].getSpeed() / 2, 15, 15)
+			if len(self.newGame.Players[0].checkCollision(self.ladderGroup)) == 0 or len(
+					self.newGame.Players[0].checkCollision(self.wallGroup)) != 0:
+				self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
+												 self.newGame.Players[0].getSpeed() / 2, 15, 15)
 
-        		# If we are on a ladder, then we can move down
-        		if keyState[pygame.K_s] and self.newGame.Players[0].onLadder:
-        			self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
-        											 self.newGame.Players[0].getSpeed() / 2, 15, 15)
+		# If we are on a ladder, then we can move down
+		if keyState[pygame.K_s] and self.newGame.Players[0].onLadder:
+			self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
+											 self.newGame.Players[0].getSpeed() / 2, 15, 15)
 
 		# Update the player's position and process his jump if he is jumping
 		self.newGame.Players[0].continuousUpdate(
@@ -211,5 +213,5 @@ if __name__ == "__main__":
 	while True:
 		dt = game.clock.tick_busy_loop(30)
 		game.step(dt)
-		#print(game.game_over())
+		print(game.game_over())
 		pygame.display.update()

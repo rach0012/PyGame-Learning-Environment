@@ -20,3 +20,4 @@ Very important: Continous actions are now allowed (previous ple version didn't a
 
 9) to make sure different rewards for win, negative etc, don't affect dqn. is the dqn supposed to gather score instead of reward?
 
+10) Create a python bot to control the game
