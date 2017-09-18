@@ -28,7 +28,7 @@ class Board(object):
         self._dir = _dir
         
         self.playerPosition = (120, 150) #change here depending on game width and height
-        self.princessPosition = (90, 32)
+        self.princessPosition = (90, 48)
 
         self.IMAGES = {
             "still": pygame.image.load(os.path.join(_dir, 'assets/still.png')).convert_alpha(),
