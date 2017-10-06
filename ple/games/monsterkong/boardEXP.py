@@ -27,7 +27,7 @@ class Board(object):
         self.direction = 0
         self._dir = _dir
         
-        self.playerPosition = (120, 350) #change here depending on game width and height
+        self.playerPosition = (120, 150) #change here depending on game width and height
         self.princessPosition = (90, 48)
 
         self.IMAGES = {
@@ -98,7 +98,7 @@ class Board(object):
         return 0
 
     def populateMap(self):
-        f = open ( 'map_affordance.txt' , 'r')
+        f = open ( 'map_short_enemies.txt' , 'r')
         self.map = [ map(int,line.split(',')) for line in f if line.strip() != "" ] #load your own custom map here
         
         for x in range(len(self.map)):

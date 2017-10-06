@@ -27,14 +27,15 @@ class Board(object):
         self.direction = 0
         self._dir = _dir
         
-        self.playerPosition = (120, 230) #change here depending on game width and height. for map_short it was (120,150)
-        self.princessPosition = (90, 48) #for map_short it was (90,48)
-
+        self.playerPosition = (120, 150) #change here depending on game width and height. for map_short it was (120,150), for short2 it was (120,230)
+        self.princessPosition = (90, 48) #for map_short it was (90,48), same for short2
+        #enemies are numbered from 11-15	
         self.IMAGES = {
             "still": pygame.image.load(os.path.join(_dir, 'assets/still.png')).convert_alpha(),
             "monster0": pygame.image.load(os.path.join(_dir, 'assets/monster0.png')).convert_alpha(),
             "princess": pygame.image.load(os.path.join(_dir, 'assets/princess.png')).convert_alpha(),
             "coin1": pygame.image.load(os.path.join(_dir, 'assets/spikes.png')).convert_alpha(),
+            "coin2": pygame.image.load(os.path.join(_dir, 'assets/fire.png')).convert_alpha(),
             "wood_block": pygame.image.load(os.path.join(_dir, 'assets/wood_block.png')).convert_alpha(),
             "wood_block2": pygame.image.load(os.path.join(_dir, 'assets/wood_block2.png')).convert_alpha(),
             "wood_block3": pygame.image.load(os.path.join(_dir, 'assets/wood_block3.png')).convert_alpha(),
@@ -98,7 +99,7 @@ class Board(object):
         return 0
 
     def populateMap(self):
-        f = open ( 'map_short2.txt' , 'r')
+        f = open ( 'map_short_enemies.txt' , 'r')
         self.map = [ map(int,line.split(',')) for line in f if line.strip() != "" ] #load your own custom map here
         
         for x in range(len(self.map)):
@@ -117,14 +118,22 @@ class Board(object):
                             self.IMAGES["ladder"],
                             (y * 15 + 15 / 2,
                              x * 15 + 15 / 2)))
-                elif self.map[x][y] == 3:
-                    # Add the coin to our coin list
+                elif self.map[x][y] == 11: 
+                    # Add the enemy to our enemy list
                     self.Coins.append(
                         Coin(
                             self.IMAGES["coin1"],
                             (y * 15 + 15 / 2,
                              x * 15 + 15 / 2),
                              self._dir))
+                elif self.map[x][y] == 12: 
+                    # Add the enemy to our enemy list
+                    self.Coins.append(
+                        Coin(
+                            self.IMAGES["coin2"],
+                            (y * 15 + 15 / 2,
+                             x * 15 + 15 / 2),
+                             self._dir)) 
                 # Add a wall at that position
                 elif self.map[x][y] == 4:
                     self.Walls.append(

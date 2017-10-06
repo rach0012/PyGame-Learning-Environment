@@ -20,8 +20,8 @@ class MonsterKong(PyGameWrapper):
 
 		"""
 
-		self.height = 270 #modify height accordingly based on how long the game level is , for map_short it was 210*210
-		self.width = 270
+		self.height = 210 #modify height accordingly based on how long the game level is , for map_short it was 210*210, for short2 it was 270*270
+		self.width = 210
 
 		actions = {
 			"left": K_a,
