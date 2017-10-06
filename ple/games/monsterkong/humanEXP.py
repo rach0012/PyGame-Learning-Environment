@@ -4,7 +4,7 @@ __author__ = 'Batchu Vishal'
 import pygame
 import sys
 from pygame.constants import K_a, K_d, K_SPACE, K_w, K_s, QUIT, KEYDOWN
-from .board import Board
+from .boardEXP import Board
 #from ..base import base
 #from ple.games import base
 from ple.games.base.pygamewrapper import PyGameWrapper
@@ -22,7 +22,7 @@ class MonsterKong(PyGameWrapper):
 
 		"""
 
-		self.height = 205 #modify height accordingly based on how long the game level is 
+		self.height = 475 #modify height accordingly based on how long the game level is 
 		self.width = 500
 
 		actions = {
@@ -213,5 +213,4 @@ if __name__ == "__main__":
 	while True:
 		dt = game.clock.tick_busy_loop(30)
 		game.step(dt)
-		print(game.game_over())
 		pygame.display.update()

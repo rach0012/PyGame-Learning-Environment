@@ -27,15 +27,15 @@ class Board(object):
         self.direction = 0
         self._dir = _dir
         
-        self.playerPosition = (120, 230) #change here depending on game width and height. for map_short it was (120,150)
-        self.princessPosition = (90, 48) #for map_short it was (90,48)
+        self.playerPosition = (120, 350) #change here depending on game width and height
+        self.princessPosition = (90, 48)
 
         self.IMAGES = {
             "still": pygame.image.load(os.path.join(_dir, 'assets/still.png')).convert_alpha(),
             "monster0": pygame.image.load(os.path.join(_dir, 'assets/monster0.png')).convert_alpha(),
             "princess": pygame.image.load(os.path.join(_dir, 'assets/princess.png')).convert_alpha(),
             "coin1": pygame.image.load(os.path.join(_dir, 'assets/spikes.png')).convert_alpha(),
-            "wood_block": pygame.image.load(os.path.join(_dir, 'assets/wood_block.png')).convert_alpha(),
+            "wood_block1": pygame.image.load(os.path.join(_dir, 'assets/wood_block1.png')).convert_alpha(),
             "wood_block2": pygame.image.load(os.path.join(_dir, 'assets/wood_block2.png')).convert_alpha(),
             "wood_block3": pygame.image.load(os.path.join(_dir, 'assets/wood_block3.png')).convert_alpha(),
             "wood_block4": pygame.image.load(os.path.join(_dir, 'assets/wood_block4.png')).convert_alpha(),
@@ -98,7 +98,7 @@ class Board(object):
         return 0
 
     def populateMap(self):
-        f = open ( 'map_short2.txt' , 'r')
+        f = open ( 'map_affordance.txt' , 'r')
         self.map = [ map(int,line.split(',')) for line in f if line.strip() != "" ] #load your own custom map here
         
         for x in range(len(self.map)):
@@ -107,7 +107,7 @@ class Board(object):
                     # Add a wall at that position
                     self.Walls.append(
                         OnBoard(
-                            self.IMAGES["wood_block"],
+                            self.IMAGES["wood_block1"],
                             (y * 15 + 15 / 2,
                              x * 15 + 15 / 2)))
                 elif self.map[x][y] == 2:
@@ -190,16 +190,16 @@ class Board(object):
     def checkVictory(self):
         # If you touch the princess or reach the floor with the princess you
         # win!
-        
         if self.Players[0].checkCollision(self.allyGroup) or self.Players[
                 0].getPosition()[1] < 4 * 15:
 
             self.score += self.rewards["win"]
+            print('HOORAY')
+
             # This is just the next level so we only clear the fireballs and
             # regenerate the coins
             self.Players[0].setPosition(self.playerPosition)
-            self.lives = 0 #set lives to be zero when you win to restart the game
-            self.createGroups()        
+            self.createGroups()
 
     # Redraws the entire game screen for us
     def redrawScreen(self, screen, width, height):
@@ -213,7 +213,6 @@ class Board(object):
 
     # Update all the groups from their corresponding lists
     def createGroups(self):
-
         self.playerGroup = pygame.sprite.RenderPlain(self.Players)
         self.wallGroup = pygame.sprite.RenderPlain(self.Walls)
         self.ladderGroup = pygame.sprite.RenderPlain(self.Ladders)

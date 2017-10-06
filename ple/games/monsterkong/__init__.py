@@ -20,8 +20,8 @@ class MonsterKong(PyGameWrapper):
 
 		"""
 
-		self.height = 210 #modify height accordingly based on how long the game level is 
-		self.width = 210
+		self.height = 270 #modify height accordingly based on how long the game level is , for map_short it was 210*210
+		self.width = 270
 
 		actions = {
 			"left": K_a,
@@ -70,7 +70,10 @@ class MonsterKong(PyGameWrapper):
 		return self.newGame.score
 
 	def game_over(self):
-		return self.newGame.lives <= 0
+		if(self.newGame.lives <=0):
+			return 1
+		else:
+			return 0
 
 	def step(self, dt):
 		self.newGame.score += self.rewards["tick"]
@@ -211,5 +214,5 @@ if __name__ == "__main__":
 	while True:
 		dt = game.clock.tick_busy_loop(30)
 		game.step(dt)
-		#print(game.game_over())
+
 		pygame.display.update()
