@@ -27,8 +27,8 @@ class Board(object):
         self.direction = 0
         self._dir = _dir
         
-        self.playerPosition = (120, 150) #change here depending on game width and height. for map_short it was (120,150), for short2 it was (120,230)
-        self.princessPosition = (90, 48) #for map_short it was (90,48), same for short2
+        self.playerPosition = (120, 150) #change here depending on game width and height. for map_short it was (120,150), for short2 it was (120,230), for 3 (50,100)
+        self.princessPosition = (60, 35) #for map_short it was (90,48), same for short2, (30,63 for short3)
         #enemies are numbered from 11-15	
         self.IMAGES = {
             "still": pygame.image.load(os.path.join(_dir, 'assets/still.png')).convert_alpha(),
@@ -99,7 +99,7 @@ class Board(object):
         return 0
 
     def populateMap(self):
-        f = open ( 'map_short_enemies.txt' , 'r')
+        f = open ( 'map_short.txt' , 'r')
         self.map = [ map(int,line.split(',')) for line in f if line.strip() != "" ] #load your own custom map here
         
         for x in range(len(self.map)):
@@ -200,8 +200,8 @@ class Board(object):
         # If you touch the princess or reach the floor with the princess you
         # win!
         
-        if self.Players[0].checkCollision(self.allyGroup) or self.Players[
-                0].getPosition()[1] < 4 * 15:
+        if self.Players[0].checkCollision(self.allyGroup): #this is for victory upon reaching the floor as well - or self.Players[
+                #0].getPosition()[1] < 4 * 15
 
             self.score += self.rewards["win"]
             # This is just the next level so we only clear the fireballs and

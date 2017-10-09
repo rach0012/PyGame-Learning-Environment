@@ -20,7 +20,7 @@ class MonsterKong(PyGameWrapper):
 
 		"""
 
-		self.height = 210 #modify height accordingly based on how long the game level is , for map_short it was 210*210, for short2 it was 270*270
+		self.height = 210 #modify height accordingly based on how long the game level is , for map_short it was 210*210, for short2 it was 270*270, for short3 it is 170*170
 		self.width = 210
 
 		actions = {
@@ -102,6 +102,8 @@ class MonsterKong(PyGameWrapper):
 			self.laddersCollidedBelow,
 			self.wallsCollidedBelow,
 			self.wallsCollidedAbove)
+
+		#pygame.key.set_repeat(50,50)
 
 		for event in pygame.event.get():
 			# Exit to desktop
@@ -214,5 +216,4 @@ if __name__ == "__main__":
 	while True:
 		dt = game.clock.tick_busy_loop(30)
 		game.step(dt)
-
 		pygame.display.update()
