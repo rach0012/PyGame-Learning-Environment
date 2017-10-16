@@ -80,6 +80,7 @@ class MonsterKong(PyGameWrapper):
 		# This is where the actual game is run
 		# Get the appropriate groups
 		self.coinGroup = self.newGame.coinGroup
+		self.coinGroup2 = self.newGame.coinGroup2
 
 		# To check collisions below, we move the player downwards then check
 		# and move him back to his original location
@@ -198,7 +199,11 @@ class MonsterKong(PyGameWrapper):
 		# Collect a coin
 		coinsCollected = pygame.sprite.spritecollide(
 			self.newGame.Players[0], self.coinGroup, True)
+		coinsCollected2 = pygame.sprite.spritecollide(
+			self.newGame.Players[0], self.coinGroup2, True)
+		#print(self.newGame.Players[0])
 		self.newGame.coinCheck(coinsCollected)
+		self.newGame.coinCheck2(coinsCollected2)
 
 		# Check if you have reached the princess
 		self.newGame.checkVictory()
