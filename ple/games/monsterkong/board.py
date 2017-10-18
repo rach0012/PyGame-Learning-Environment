@@ -27,14 +27,14 @@ class Board(object):
         self.direction = 0
         self._dir = _dir
         
-        self.playerPosition = (120, 150) #change here depending on game width and height. for map_short it was (120,150), for short2 it was (120,230), for 3 (50,100)
-        self.princessPosition = (30, 35) #for map_short it was (90,48), same for short2, (30,63 for short3)
+        self.playerPosition = (120, 180) #change here depending on game width and height. for map_short it was (120,150), for short2 it was (120,230), for 3 (50,100)
+        self.princessPosition = (30, 62) #for map_short it was (90,48), same for short2, (30,63 for short3)
         #enemies are numbered from 11-15	
         self.IMAGES = {
             "still": pygame.image.load(os.path.join(_dir, 'assets/still.png')).convert_alpha(),
             "monster0": pygame.image.load(os.path.join(_dir, 'assets/monster0.png')).convert_alpha(),
             "princess": pygame.image.load(os.path.join(_dir, 'assets/princess.png')).convert_alpha(),
-            "coin1": pygame.image.load(os.path.join(_dir, 'assets/spikes.png')).convert_alpha(),
+            "coin1": pygame.image.load(os.path.join(_dir, 'assets/enemy1.png')).convert_alpha(),
             "coin2": pygame.image.load(os.path.join(_dir, 'assets/fire.png')).convert_alpha(),
             "wood_block": pygame.image.load(os.path.join(_dir, 'assets/wood_block.png')).convert_alpha(),
             "wood_block2": pygame.image.load(os.path.join(_dir, 'assets/wood_block2.png')).convert_alpha(),
@@ -102,7 +102,7 @@ class Board(object):
         return 0
 
     def populateMap(self):
-        f = open ( 'map_short.txt' , 'r')
+        f = open ( 'map_3.txt' , 'r')
         self.map = [ map(int,line.split(',')) for line in f if line.strip() != "" ] #load your own custom map here
         
         for x in range(len(self.map)):

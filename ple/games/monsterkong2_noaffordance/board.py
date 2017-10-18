@@ -27,17 +27,17 @@ class Board(object):
         self.direction = 0
         self._dir = _dir
         
-        self.playerPosition = (120, 180) 
-        self.princessPosition = (190, 62) 
+        self.playerPosition = (120, 180) #change here depending on game width and height. for map_short it was (120,150), for short2 it was (120,230), for 3 (50,100)
+        self.princessPosition = (30, 62) #for map_short it was (90,48), same for short2, (30,63 for short3)
         #enemies are numbered from 11-15	
         self.IMAGES = {
-            "still": pygame.image.load(os.path.join(_dir, 'assets/still.png')).convert_alpha(),
+            "still": pygame.image.load(os.path.join(_dir, 'assets/still2.png')).convert_alpha(),
             "monster0": pygame.image.load(os.path.join(_dir, 'assets/monster0.png')).convert_alpha(),
             "princess": pygame.image.load(os.path.join(_dir, 'assets/princess.png')).convert_alpha(),
-            "coin1": pygame.image.load(os.path.join(_dir, 'assets/spikes.png')).convert_alpha(),
+            "coin1": pygame.image.load(os.path.join(_dir, 'assets/enemy1.png')).convert_alpha(),
             "coin2": pygame.image.load(os.path.join(_dir, 'assets/fire.png')).convert_alpha(),
             "wood_block": pygame.image.load(os.path.join(_dir, 'assets/wood_block1.png')).convert_alpha(),
-            "wood_block2": pygame.image.load(os.path.join(_dir, 'assets/wood_block.png')).convert_alpha(),
+            "wood_block2": pygame.image.load(os.path.join(_dir, 'assets/wood_block2.png')).convert_alpha(),
             "wood_block3": pygame.image.load(os.path.join(_dir, 'assets/wood_block3.png')).convert_alpha(),
             "wood_block4": pygame.image.load(os.path.join(_dir, 'assets/wood_block4.png')).convert_alpha(),
             "wood_block5": pygame.image.load(os.path.join(_dir, 'assets/wood_block5.png')).convert_alpha(),
@@ -45,10 +45,9 @@ class Board(object):
             "ladder": pygame.image.load(os.path.join(_dir, 'assets/ladder2.png')).convert_alpha(),
             "background": pygame.image.load(os.path.join(_dir, 'assets/background2.png')).convert_alpha()
         }
-        self.IMAGES["background"] = pygame.transform.scale(self.IMAGES["background"], (240, 232));
 
         self.white = (255, 255, 255)
-
+        self.IMAGES["background"] = pygame.transform.scale(self.IMAGES["background"], (240, 232));
         '''
         The map is essentially an array of 30x80 in which we store what each block on our map is.
         1 represents a wall, 2 for a ladder and 3 for a coin.
@@ -58,7 +57,8 @@ class Board(object):
         # classes
         self.Players = []
         self.Allies = []
-        self.Coins = []
+        self.Coins = [] #enemy #1 is destroyable
+        self.Coins2 = [] #enemy #2 is not destroyable
         self.Walls = []
         self.Ladders = []
         self.Boards = []
@@ -72,6 +72,7 @@ class Board(object):
         self.wallGroup = pygame.sprite.RenderPlain(self.Walls)
         self.ladderGroup = pygame.sprite.RenderPlain(self.Ladders)
         self.coinGroup = pygame.sprite.RenderPlain(self.Coins)
+        self.coinGroup2 = pygame.sprite.RenderPlain(self.Coins2)
         self.allyGroup = pygame.sprite.RenderPlain(self.Allies)
 
     def resetGroups(self):
@@ -82,6 +83,7 @@ class Board(object):
         self.Allies = [Person(self.IMAGES["princess"], self.princessPosition, 18, 25)] #initial position of the goal i.e. princess
         self.Allies[0].updateWH(self.Allies[0].image, "H", 0, 25, 25)
         self.Coins = []
+        self.Coins2 = []
         self.Walls = []
         self.Ladders = []
         self.initializeGame()  # This initializes the game and generates our map
@@ -130,7 +132,7 @@ class Board(object):
                              self._dir))
                 elif self.map[x][y] == 12: 
                     # Add the enemy to our enemy list
-                    self.Coins.append(
+                    self.Coins2.append(
                         Coin(
                             self.IMAGES["coin2"],
                             (y * 15 + 15 / 2,
@@ -186,13 +188,25 @@ class Board(object):
     def coinCheck(self, coinsCollected):
         for coin in coinsCollected:
             #self.score += self.rewards["negative"]
+            if(self.Players[0].getPosition()[1]+7 < coin.getPosition()[1]): #if player has hit enemy while jumping, we kill the enemy
+                # Remove the coin entry from our list
+                coin.kill()
+            else:
+                self.Players[0].setPosition(self.playerPosition) #player dies when reaches coin (coin is basically the enemy)
+                # We also remove the coin entry from our map
+                #self.map[int((coin.getPosition()[1] - 15 / 2) /
+                #         15)][int((coin.getPosition()[0] - 15 / 2) / 15)] = 0
+                self.lives = 0
+                # Update the coin group since we modified the coin list
+                #self.populateMap()
+                self.createGroups()  
+
+        # Check for coins collided and add the appropriate score
+    def coinCheck2(self, coinsCollected2):
+        for coin2 in coinsCollected2:
+            #self.score += self.rewards["negative"]
             self.Players[0].setPosition(self.playerPosition) #player dies when reaches coin (coin is basically the enemy)
-            # We also remove the coin entry from our map
-            #self.map[int((coin.getPosition()[1] - 15 / 2) /
-            #         15)][int((coin.getPosition()[0] - 15 / 2) / 15)] = 0
             self.lives = 0
-            # Remove the coin entry from our list
-            #self.Coins.remove(coin)
             # Update the coin group since we modified the coin list
             self.createGroups()
 
@@ -209,6 +223,7 @@ class Board(object):
             # regenerate the coins
             self.Players[0].setPosition(self.playerPosition)
             self.lives = 0 #set lives to be zero when you win to restart the game
+            #self.populateMap()
             self.createGroups()        
 
     # Redraws the entire game screen for us
@@ -218,6 +233,7 @@ class Board(object):
         # Draw all our groups on the background
         self.ladderGroup.draw(screen)
         self.playerGroup.draw(screen)
+        self.coinGroup2.draw(screen)
         self.coinGroup.draw(screen)
         self.wallGroup.draw(screen)
         self.allyGroup.draw(screen)
@@ -229,6 +245,7 @@ class Board(object):
         self.wallGroup = pygame.sprite.RenderPlain(self.Walls)
         self.ladderGroup = pygame.sprite.RenderPlain(self.Ladders)
         self.coinGroup = pygame.sprite.RenderPlain(self.Coins)
+        self.coinGroup2 = pygame.sprite.RenderPlain(self.Coins2)
         self.allyGroup = pygame.sprite.RenderPlain(self.Allies)
 
     '''
