@@ -32,10 +32,10 @@ class Board(object):
         #enemies are numbered from 11-15	
         self.IMAGES = {
             "still": pygame.image.load(os.path.join(_dir, 'assets/still2.png')).convert_alpha(),
-            "monster0": pygame.image.load(os.path.join(_dir, 'assets/monster0.png')).convert_alpha(),
+            "monster0": pygame.image.load(os.path.join(_dir, 'assets/wood_block3.png')).convert_alpha(),
             "princess": pygame.image.load(os.path.join(_dir, 'assets/princess.png')).convert_alpha(),
-            "coin1": pygame.image.load(os.path.join(_dir, 'assets/enemy1.png')).convert_alpha(),
-            "coin2": pygame.image.load(os.path.join(_dir, 'assets/fire.png')).convert_alpha(),
+            "coin1": pygame.image.load(os.path.join(_dir, 'assets/wood_block3.png')).convert_alpha(),
+            "coin2": pygame.image.load(os.path.join(_dir, 'assets/wood_block2.png')).convert_alpha(),
             "wood_block": pygame.image.load(os.path.join(_dir, 'assets/wood_block1.png')).convert_alpha(),
             "wood_block2": pygame.image.load(os.path.join(_dir, 'assets/wood_block2.png')).convert_alpha(),
             "wood_block3": pygame.image.load(os.path.join(_dir, 'assets/wood_block3.png')).convert_alpha(),
