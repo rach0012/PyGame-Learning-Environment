@@ -27,8 +27,8 @@ class Board(object):
         self.direction = 0
         self._dir = _dir
         
-        self.playerPosition = (120, 180) 
-        self.princessPosition = (190, 62) 
+        self.playerPosition = (120, 167) 
+        self.princessPosition = (30, 167) 
         #enemies are numbered from 11-15	
         self.IMAGES = {
             "still": pygame.image.load(os.path.join(_dir, 'assets/still.png')).convert_alpha(),
@@ -101,7 +101,7 @@ class Board(object):
         return 0
 
     def populateMap(self):
-        f = open ( 'map_3.txt' , 'r')
+        f = open ( 'map_explore.txt' , 'r')
         self.map = [ map(int,line.split(',')) for line in f if line.strip() != "" ] #load your own custom map here
         
         for x in range(len(self.map)):
@@ -185,14 +185,14 @@ class Board(object):
     # Check for coins collided and add the appropriate score
     def coinCheck(self, coinsCollected):
         for coin in coinsCollected:
-            #self.score += self.rewards["negative"]
-            self.Players[0].setPosition(self.playerPosition) #player dies when reaches coin (coin is basically the enemy)
+            self.score += self.rewards["positive"]
+            #self.Players[0].setPosition(self.playerPosition) #player dies when reaches coin (coin is basically the enemy)
             # We also remove the coin entry from our map
-            #self.map[int((coin.getPosition()[1] - 15 / 2) /
-            #         15)][int((coin.getPosition()[0] - 15 / 2) / 15)] = 0
-            self.lives = 0
+            self.map[int((coin.getPosition()[1] - 15 / 2) /
+                     15)][int((coin.getPosition()[0] - 15 / 2) / 15)] = 0
+            #self.lives = 0
             # Remove the coin entry from our list
-            #self.Coins.remove(coin)
+            self.Coins.remove(coin)
             # Update the coin group since we modified the coin list
             self.createGroups()
 
