@@ -20,8 +20,8 @@ class MonsterKong(PyGameWrapper):
 
 		"""
 
-		self.height = 240 #modify height accordingly based on how long the game level is , for map_short it was 210*210, for short2 it was 270*270, for short3 it is 170*170
-		self.width = 240
+		self.height = 225 #modify height accordingly based on how long the game level is , for map_short it was 210*210, for short2 it was 270*270, for short3 it is 170*170
+		self.width = 225
 
 		actions = {
 			"left": K_a,
@@ -44,11 +44,11 @@ class MonsterKong(PyGameWrapper):
 		self._dir = os.path.dirname(os.path.abspath(__file__))
 
 		self.IMAGES = {
-			"right": pygame.image.load(os.path.join(self._dir, 'assets/still2.png')),
-			"right2": pygame.image.load(os.path.join(self._dir, 'assets/still2.png')),
-			"left": pygame.image.load(os.path.join(self._dir, 'assets/still2.png')),
-			"left2": pygame.image.load(os.path.join(self._dir, 'assets/still2.png')),
-			"still": pygame.image.load(os.path.join(self._dir, 'assets/still2.png'))
+			"right": pygame.image.load(os.path.join(self._dir, 'assets/still.png')),
+			"right2": pygame.image.load(os.path.join(self._dir, 'assets/still.png')),
+			"left": pygame.image.load(os.path.join(self._dir, 'assets/still.png')),
+			"left2": pygame.image.load(os.path.join(self._dir, 'assets/still.png')),
+			"still": pygame.image.load(os.path.join(self._dir, 'assets/still.png'))
 		}
 
 	def init(self):
@@ -80,6 +80,7 @@ class MonsterKong(PyGameWrapper):
 		# This is where the actual game is run
 		# Get the appropriate groups
 		self.coinGroup = self.newGame.coinGroup
+		self.coinGroup2 = self.newGame.coinGroup2
 
 		# To check collisions below, we move the player downwards then check
 		# and move him back to his original location
@@ -198,7 +199,11 @@ class MonsterKong(PyGameWrapper):
 		# Collect a coin
 		coinsCollected = pygame.sprite.spritecollide(
 			self.newGame.Players[0], self.coinGroup, True)
+		coinsCollected2 = pygame.sprite.spritecollide(
+			self.newGame.Players[0], self.coinGroup2, True)
+		#print(self.newGame.Players[0])
 		self.newGame.coinCheck(coinsCollected)
+		self.newGame.coinCheck2(coinsCollected2)
 
 		# Check if you have reached the princess
 		self.newGame.checkVictory()
