@@ -101,9 +101,16 @@ class Board(object):
         return 0
 
     def populateMap(self):
+        import os
+        print(os.getcwd())
         f = open ( 'map_explore.txt' , 'r')
-        self.map = [ map(int,line.split(',')) for line in f if line.strip() != "" ] #load your own custom map here
-        
+        self.map = [ list(map(int,line.split(','))) for line in f if line.strip() != "" ] #load your own custom map here
+        print(type(self.map))
+        print(self.map)
+        # import json
+        # with open("boards/map14.json", "r") as infile:
+        #     self.map = json.load(infile)
+
         for x in range(len(self.map)):
             for y in range(len(self.map[x])):
                 if self.map[x][y] == 1:
