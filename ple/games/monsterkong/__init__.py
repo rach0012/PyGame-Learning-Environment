@@ -36,7 +36,7 @@ class MonsterKong(PyGameWrapper):
 
         self.rewards = {
             "positive": 0, #original was 5
-            "win": 50,
+            "win": 1,
             "negative": 0, #original was -25
             "tick": 0
         }
@@ -128,7 +128,7 @@ class MonsterKong(PyGameWrapper):
                         self.newGame.Players[0].currentJumpSpeed = 7
 
                 keyState = pygame.key.get_pressed()
-                if keyState[pygame.K_d]:
+                if keyState[pygame.K_d] or event.__dict__['key'] == pygame.K_d:
                     if self.newGame.direction != 4:
                         self.newGame.direction = 4
                         self.newGame.cycles = -1  # Reset cycles
@@ -149,7 +149,7 @@ class MonsterKong(PyGameWrapper):
                         self.newGame.Players[0].updateWH(self.IMAGES["right"], "H",
                                                          -self.newGame.Players[0].getSpeed(), 15, 15)
 
-                if keyState[pygame.K_a]:
+                if keyState[pygame.K_a] or event.__dict__['key'] == pygame.K_a:
                     if self.newGame.direction != 3:
                         self.newGame.direction = 3
                         self.newGame.cycles = -1  # Reset cycles
@@ -171,7 +171,7 @@ class MonsterKong(PyGameWrapper):
                                                          self.newGame.Players[0].getSpeed(), 15, 15)
 
                 # If we are on a ladder, then we can move up
-                if keyState[pygame.K_w] and self.newGame.Players[0].onLadder:
+                if (keyState[pygame.K_w] or event.__dict__['key'] == pygame.K_w) and self.newGame.Players[0].onLadder:
                     self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
                                                      -self.newGame.Players[0].getSpeed() / 2, 15, 15)
                     if len(self.newGame.Players[0].checkCollision(self.ladderGroup)) == 0 or len(
@@ -180,7 +180,7 @@ class MonsterKong(PyGameWrapper):
                                                          self.newGame.Players[0].getSpeed() / 2, 15, 15)
 
                 # If we are on a ladder, then we can move down
-                if keyState[pygame.K_s] and self.newGame.Players[0].onLadder:
+                if (keyState[pygame.K_s] or event.__dict__['key'] == pygame.K_s) and self.newGame.Players[0].onLadder:
                     self.newGame.Players[0].updateWH(self.IMAGES["still"], "V",
                                                      self.newGame.Players[0].getSpeed() / 2, 15, 15)
 

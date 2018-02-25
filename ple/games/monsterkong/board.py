@@ -103,7 +103,7 @@ class Board(object):
 
     def populateMap(self):
         f = open ( 'map_3.txt' , 'r')
-        self.map = [ map(int,line.split(',')) for line in f if line.strip() != "" ] #load your own custom map here
+        self.map = [list(map(int,line.split(','))) for line in f if line.strip() != "" ] #load your own custom map here
         
         for x in range(len(self.map)):
             for y in range(len(self.map[x])):
@@ -198,7 +198,7 @@ class Board(object):
                 self.lives = 0
                 # Update the coin group since we modified the coin list
                 #self.populateMap()
-                self.createGroups()  
+                self.createGroups()
 
         # Check for coins collided and add the appropriate score
     def coinCheck2(self, coinsCollected2):
